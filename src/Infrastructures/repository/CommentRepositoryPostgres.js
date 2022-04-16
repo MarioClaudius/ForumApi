@@ -2,6 +2,7 @@ const CommentRepository = require('../../Domains/comments/CommentRepository');
 const AddedComment = require('../../Domains/comments/entities/AddedComment');
 const NotFoundError = require('../../Commons/exceptions/NotFoundError');
 const AuthorizationError = require('../../Commons/exceptions/AuthorizationError');
+const DetailComment = require('../../Domains/comments/entities/DetailComment');
 
 class CommentRepositoryPostgres extends CommentRepository {
   constructor(pool, idGenerator) {
@@ -57,6 +58,17 @@ class CommentRepositoryPostgres extends CommentRepository {
     if (!result.rows.length) {
       throw new NotFoundError('Comment tidak dapat dihapus. Id tidak ditemukan');
     }
+  }
+
+  async getCommentsByThreadId(threadId) {
+    const query = {
+      text: 'SELECT id, owner, date, content, is_deleted FROM comments WHERE thread_id = $1 ORDER BY date ASC',
+      values: [threadId],
+    };
+
+    const result = await this._pool.query(query);
+    console.log(result.rows);
+    return result.rows;
   }
 }
 

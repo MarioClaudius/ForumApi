@@ -16,6 +16,8 @@
         "linebreak-style": "off",
         "no-underscore-dangle": "off",
         "class-methods-use-this": "off",
-        "no-unused-vars": "off"
+        "no-unused-vars": "off",
+        "no-plusplus": "off",
+        "no-await-in-loop": "off"
     }
 }
