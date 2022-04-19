@@ -1,5 +1,4 @@
 const CommentRepository = require('../../../Domains/comments/CommentRepository');
-const ThreadRepository = require('../../../Domains/threads/ThreadRepository');
 const DeleteCommentUseCase = require('../DeleteCommentUseCase');
 
 describe('DeleteCommentUseCase', () => {
@@ -11,7 +10,6 @@ describe('DeleteCommentUseCase', () => {
 
     // creating dependency of use case
     const mockCommentRepository = new CommentRepository();
-    const mockThreadRepository = new ThreadRepository();
 
     // mock needed function
     mockCommentRepository.getCommentByIdAndThreadId = jest.fn()

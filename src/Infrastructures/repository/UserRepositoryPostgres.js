@@ -68,29 +68,6 @@ class UserRepositoryPostgres extends UserRepository {
 
     return id;
   }
-
-  async deleteUserById(id) {
-    const query = {
-      text: 'DELETE FROM users WHERE id = $1',
-      values: [id],
-    };
-
-    const result = await this._pool.query(query);
-
-    if (!result.rows.length) {
-      throw new NotFoundError('User gagal dihapus. Id tidak ditemukan');
-    }
-  }
-
-  async getUsernameById(id) {
-    const query = {
-      text: 'SELECT username FROM users WHERE id = $1',
-      values: [id],
-    };
-
-    const result = await this._pool.query(query);
-    return result.rows[0].username;
-  }
 }
 
 module.exports = UserRepositoryPostgres;

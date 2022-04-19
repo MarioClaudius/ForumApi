@@ -54,20 +54,20 @@ class CommentRepositoryPostgres extends CommentRepository {
       values: [commentId],
     };
 
+    // tidak perlu throw error karena sudah diwakili method getCommentByIdAndThreadId
     const result = await this._pool.query(query);
-    if (!result.rows.length) {
-      throw new NotFoundError('Comment tidak dapat dihapus. Id tidak ditemukan');
-    }
   }
 
   async getCommentsByThreadId(threadId) {
     const query = {
-      text: 'SELECT id, owner, date, content, is_deleted FROM comments WHERE thread_id = $1 ORDER BY date ASC',
+      text: `SELECT comments.id, users.username, comments.date, comments.content, comments.is_deleted FROM comments 
+             INNER JOIN users 
+             ON comments.owner = users.id 
+             WHERE thread_id = $1`,
       values: [threadId],
     };
 
     const result = await this._pool.query(query);
-    console.log(result.rows);
     return result.rows;
   }
 }

@@ -25,7 +25,7 @@ describe('GetDetailThreadUseCase', () => {
       id: 'comment1',
       username: 'budi',
       date: 'example date',
-      threadId: 'thread-123',
+      thread_id: 'thread-123',
       content: 'example content',
       isDeleted: false,
     });
@@ -33,7 +33,7 @@ describe('GetDetailThreadUseCase', () => {
       id: 'comment2',
       username: 'bayu',
       date: 'date example',
-      threadId: 'thread-123',
+      thread_id: 'thread-123',
       content: 'content example',
       isDeleted: false,
     });
@@ -41,21 +41,17 @@ describe('GetDetailThreadUseCase', () => {
     const commentsArray = [comment1, comment2];
 
     // creating dependency of use case
-    const mockUserRepository = new UserRepository();
     const mockThreadRepository = new ThreadRepository();
     const mockCommentRepository = new CommentRepository();
 
     // mock needed function
-    mockUserRepository.getUsernameById = jest.fn()
-      .mockImplementation(() => Promise.resolve());
     mockThreadRepository.getThreadById = jest.fn()
-      .mockImplementation(() => Promise.resolve(expectedDetailThread));
+      .mockImplementation(() => Promise.resolve(new DetailThread(expectedDetailThread)));
     mockCommentRepository.getCommentsByThreadId = jest.fn()
-      .mockImplementation(() => Promise.resolve());
+      .mockImplementation(() => Promise.resolve(commentsArray));
 
     // create use case instance
     const getDetailThreadUseCase = new GetDetailThreadUseCase({
-      userRepository: mockUserRepository,
       threadRepository: mockThreadRepository,
       commentRepository: mockCommentRepository,
     });
@@ -63,7 +59,8 @@ describe('GetDetailThreadUseCase', () => {
     // Action
     const result = await getDetailThreadUseCase.execute(threadId);
 
-    expect(mockThreadRepository).toBeCalledWith(threadId);
+    expect(mockThreadRepository.getThreadById).toBeCalledWith(threadId);
+    expect(mockCommentRepository.getCommentsByThreadId).toBeCalledWith(threadId);
     expect(result).toEqual(new DetailThread({ ...expectedDetailThread, comments: commentsArray }));
   });
 });

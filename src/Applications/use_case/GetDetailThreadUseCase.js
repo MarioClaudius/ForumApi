@@ -2,8 +2,7 @@
 const DetailComment = require('../../Domains/comments/entities/DetailComment');
 
 class GetDetailThreadUseCase {
-  constructor({ userRepository, threadRepository, commentRepository }) {
-    this._userRepository = userRepository;
+  constructor({ threadRepository, commentRepository }) {
     this._threadRepository = threadRepository;
     this._commentRepository = commentRepository;
   }
@@ -15,7 +14,7 @@ class GetDetailThreadUseCase {
     for (let i = 0; i < commentArray.length; i++) {
       detailComment.push(new DetailComment({
         id: commentArray[i].id,
-        username: await this._userRepository.getUsernameById(commentArray[i].owner),
+        username: commentArray[i].username,
         date: commentArray[i].date,
         content: commentArray[i].is_deleted ? '**komentar telah dihapus**' : commentArray[i].content,
       }));

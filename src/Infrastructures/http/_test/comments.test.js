@@ -145,7 +145,7 @@ describe('/comments endpoint', () => {
       // Action
       const response = await server.inject({
         method: 'DELETE',
-        url: `/threads/fakeThreadId/comments/${commentId}`,
+        url: `/threads/${threadId}/comments/fakeCommentId`,
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
