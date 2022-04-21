@@ -18,6 +18,8 @@
         "class-methods-use-this": "off",
         "no-unused-vars": "off",
         "no-plusplus": "off",
-        "no-await-in-loop": "off"
+        "no-await-in-loop": "off",
+        "object-curly-newline": "off",
+        "camelcase" : "off"
     }
 }

@@ -20,4 +20,17 @@ describe('a NewComment entities', () => {
     // Action and Assert
     expect(() => new NewComment(payload)).toThrowError('NEW_COMMENT.NOT_MEET_DATA_TYPE_SPECIFICATION');
   });
+
+  it('should create newComment object correctly', () => {
+    // Arrange
+    const payload = {
+      content: 'Example content',
+    };
+
+    // Action
+    const { content } = new NewComment(payload);
+
+    // Assert
+    expect(content).toEqual(payload.content);
+  });
 });

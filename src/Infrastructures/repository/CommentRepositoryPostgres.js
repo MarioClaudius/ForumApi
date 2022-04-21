@@ -34,6 +34,8 @@ class CommentRepositoryPostgres extends CommentRepository {
     if (!result.rows.length) {
       throw new NotFoundError('Comment tidak ditemukan');
     }
+
+    return result.rows[0].id;
   }
 
   async verifyCommentOwner(commentId, owner) {
@@ -46,6 +48,8 @@ class CommentRepositoryPostgres extends CommentRepository {
     if (!result.rows.length) {
       throw new AuthorizationError('Akses tidak diberikan karena comment ini bukan milik anda');
     }
+
+    return result.rows[0].id;
   }
 
   async updateCommentIsDeleteStatusById(commentId) {
@@ -56,6 +60,7 @@ class CommentRepositoryPostgres extends CommentRepository {
 
     // tidak perlu throw error karena sudah diwakili method getCommentByIdAndThreadId
     const result = await this._pool.query(query);
+    return result.rows[0].id;
   }
 
   async getCommentsByThreadId(threadId) {

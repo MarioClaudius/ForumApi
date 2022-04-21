@@ -23,4 +23,21 @@ describe('a AddedComment entities', () => {
     // Action and Assert
     expect(() => new AddedComment(payload)).toThrowError('ADDED_COMMENT.NOT_MEET_DATA_TYPE_SPECIFICATION');
   });
+
+  it('should create addedComment object correctly', () => {
+    // Arrange
+    const payload = {
+      id: 'comment-123',
+      content: 'Example content',
+      owner: 'user-123',
+    };
+
+    // Action
+    const { id, content, owner } = new AddedComment(payload);
+
+    // Assert
+    expect(id).toEqual(payload.id);
+    expect(content).toEqual(payload.content);
+    expect(owner).toEqual(payload.owner);
+  });
 });

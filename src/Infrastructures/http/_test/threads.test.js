@@ -95,7 +95,7 @@ describe('/threads endpoint', () => {
   });
 
   describe('when GET /threads/{threadId}', () => {
-    it('should response 200 and get the detail thread informations', async () => {
+    it('should response 200 and get the detail thread informations when comment is not deleted', async () => {
       // Arrange
       const threadId = 'thread-123';
       const userId = 'user-123';
@@ -106,6 +106,36 @@ describe('/threads endpoint', () => {
       await CommentsTableTestHelper.addComment({
         id: commentId,
         owner: userId,
+        isDeleted: false,
+      });
+      const server = await createServer(container);
+
+      // Action
+      const response = await server.inject({
+        method: 'GET',
+        url: `/threads/${threadId}`,
+      });
+
+      // Assert
+      const responseJson = JSON.parse(response.payload);
+      expect(response.statusCode).toEqual(200);
+      expect(responseJson.status).toEqual('success');
+      expect(responseJson.data.thread).toBeDefined();
+      expect(responseJson.data.thread.comments).toBeDefined();
+    });
+
+    it('should response 200 and get the detail thread informations when comment is deleted', async () => {
+      // Arrange
+      const threadId = 'thread-123';
+      const userId = 'user-123';
+      const commentId = 'comment-123';
+
+      await UsersTableTestHelper.addUser({ id: userId });
+      await ThreadsTableTestHelper.addThread({ id: threadId, owner: userId });
+      await CommentsTableTestHelper.addComment({
+        id: commentId,
+        owner: userId,
+        isDeleted: true,
       });
       const server = await createServer(container);
 

@@ -9,6 +9,8 @@ const NewThread = require('../../../Domains/threads/entities/NewThread');
 const ThreadRepositoryPostgres = require('../ThreadRepositoryPostgres');
 const UserRepositoryPostgres = require('../UserRepositoryPostgres');
 const CommentsTableTestHelper = require('../../../../tests/CommentsTableTestHelper');
+const NotFoundError = require('../../../Commons/exceptions/NotFoundError');
+const AuthorizationError = require('../../../Commons/exceptions/AuthorizationError');
 
 describe('CommentRepositoryPostgres', () => {
   afterEach(async () => {
@@ -93,6 +95,153 @@ describe('CommentRepositoryPostgres', () => {
         content: newComment.content,
         owner: 'user-123',
       }));
+    });
+  });
+
+  describe('getCommentByIdAndThreadId function', () => {
+    it('should throw NotFoundError when comment not found', () => {
+      // Arrange
+      const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {});
+
+      // Action & Assert
+      expect(commentRepositoryPostgres.getCommentByIdAndThreadId('fakeThreadId', 'fakeCommentId'))
+        .rejects
+        .toThrowError(NotFoundError);
+    });
+
+    it('should not throw any error and return commentId when comment found', async () => {
+      // Arrange
+      const userId = 'user-123';
+      const thread_id = 'thread-123';
+      const commentId = 'comment-123';
+      const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {});
+      await UsersTableTestHelper.addUser({
+        id: userId,
+        username: 'dicoding',
+      });
+      await ThreadsTableTestHelper.addThread({
+        id: thread_id,
+        owner: userId,
+      });
+      await CommentsTableTestHelper.addComment({
+        id: commentId,
+        threadId: thread_id,
+      });
+
+      // Action
+      const id = await commentRepositoryPostgres.getCommentByIdAndThreadId(thread_id, commentId);
+
+      // Assert
+      expect(id).toEqual('comment-123');
+    });
+  });
+
+  describe('verifyCommentOwner function', () => {
+    it('should throw Authorization Error when try to access unauthorized comment', async () => {
+      // Arrange
+      const userId = 'user-123';
+      const thread_id = 'thread-123';
+      const commentId = 'comment-123';
+      const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {});
+      await UsersTableTestHelper.addUser({
+        id: userId,
+        username: 'dicoding',
+      });
+      await ThreadsTableTestHelper.addThread({
+        id: thread_id,
+        owner: userId,
+      });
+      await CommentsTableTestHelper.addComment({
+        id: commentId,
+        threadId: thread_id,
+      });
+
+      // Action & Assert
+      expect(commentRepositoryPostgres.verifyCommentOwner(commentId, 'fakeOwner'))
+        .rejects
+        .toThrowError(AuthorizationError);
+    });
+
+    it('should not throw error when try to access authorized comment', async () => {
+      // Arrange
+      const userId = 'user-123';
+      const thread_id = 'thread-123';
+      const commentId = 'comment-123';
+      const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {});
+      await UsersTableTestHelper.addUser({
+        id: userId,
+        username: 'dicoding',
+      });
+      await ThreadsTableTestHelper.addThread({
+        id: thread_id,
+        owner: userId,
+      });
+      await CommentsTableTestHelper.addComment({
+        id: commentId,
+        threadId: thread_id,
+      });
+
+      // Action
+      const id = await commentRepositoryPostgres.verifyCommentOwner(commentId, userId);
+
+      // Assert
+      expect(id).toEqual(commentId);
+    });
+  });
+
+  describe('updateCommentIsDeleteStatusById function', () => {
+    it('should update comment successfully', async () => {
+      // Arrange
+      const userId = 'user-123';
+      const thread_id = 'thread-123';
+      const commentId = 'comment-123';
+      const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {});
+      await UsersTableTestHelper.addUser({
+        id: userId,
+        username: 'dicoding',
+      });
+      await ThreadsTableTestHelper.addThread({
+        id: thread_id,
+        owner: userId,
+      });
+      await CommentsTableTestHelper.addComment({
+        id: commentId,
+        threadId: thread_id,
+      });
+
+      // Action
+      const id = await commentRepositoryPostgres.updateCommentIsDeleteStatusById(commentId);
+
+      // Assert
+      expect(id).toEqual(commentId);
+    });
+  });
+
+  describe('getCommentsByThreadId function', () => {
+    it('should return an array of comments', async () => {
+      // Arrange
+      const userId = 'user-123';
+      const thread_id = 'thread-123';
+      const commentId = 'comment-123';
+      const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {});
+      await UsersTableTestHelper.addUser({
+        id: userId,
+        username: 'dicoding',
+      });
+      await ThreadsTableTestHelper.addThread({
+        id: thread_id,
+        owner: userId,
+      });
+      await CommentsTableTestHelper.addComment({
+        id: commentId,
+        threadId: thread_id,
+      });
+
+      // Action
+      const comments = await commentRepositoryPostgres.getCommentsByThreadId(thread_id);
+
+      // Assert
+      expect(comments).toHaveLength(1);
     });
   });
 });

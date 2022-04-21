@@ -27,15 +27,13 @@ describe('GetDetailThreadUseCase', () => {
       date: 'example date',
       thread_id: 'thread-123',
       content: 'example content',
-      isDeleted: false,
     });
     const comment2 = new DetailComment({
       id: 'comment2',
       username: 'bayu',
       date: 'date example',
       thread_id: 'thread-123',
-      content: 'content example',
-      isDeleted: false,
+      content: '**komentar telah dihapus**',
     });
 
     const commentsArray = [comment1, comment2];
@@ -45,10 +43,32 @@ describe('GetDetailThreadUseCase', () => {
     const mockCommentRepository = new CommentRepository();
 
     // mock needed function
-    mockThreadRepository.getThreadById = jest.fn()
-      .mockImplementation(() => Promise.resolve(new DetailThread(expectedDetailThread)));
-    mockCommentRepository.getCommentsByThreadId = jest.fn()
-      .mockImplementation(() => Promise.resolve(commentsArray));
+    mockThreadRepository.getThreadById = jest.fn(() => Promise.resolve(
+      new DetailThread({
+        id: 'thread-123',
+        title: 'Example title',
+        body: 'Example body',
+        date: 'Example date',
+        username: 'Dicoding',
+        comments: [],
+      }),
+    ));
+    mockCommentRepository.getCommentsByThreadId = jest.fn(() => Promise.resolve([
+      {
+        id: 'comment1',
+        username: 'budi',
+        date: 'example date',
+        thread_id: 'thread-123',
+        content: 'example content',
+      },
+      {
+        id: 'comment2',
+        username: 'bayu',
+        date: 'date example',
+        thread_id: 'thread-123',
+        content: '**komentar telah dihapus**',
+      },
+    ]));
 
     // create use case instance
     const getDetailThreadUseCase = new GetDetailThreadUseCase({
