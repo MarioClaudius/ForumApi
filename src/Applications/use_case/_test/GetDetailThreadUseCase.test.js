@@ -60,13 +60,15 @@ describe('GetDetailThreadUseCase', () => {
         date: 'example date',
         thread_id: 'thread-123',
         content: 'example content',
+        is_deleted: false,
       },
       {
         id: 'comment2',
         username: 'bayu',
         date: 'date example',
         thread_id: 'thread-123',
-        content: '**komentar telah dihapus**',
+        content: 'example content',
+        is_deleted: true,
       },
     ]));
 
