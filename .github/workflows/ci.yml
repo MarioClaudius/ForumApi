@@ -20,6 +20,10 @@ jobs:
       uses: actions/setup-node@v2
       with:
         node-version: ${{ matrix.node-version }}
+        heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+        heroku_app_name: "protected-island-39912" #Must be unique in Heroku
+        heroku_email: "mcmario7901@gmail.com"
+        branch: "dev"
     - name: npm install migrate and test
       run: |
         npm install
