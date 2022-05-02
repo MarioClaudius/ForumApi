@@ -20,7 +20,11 @@ jobs:
         image: postgres
         # Provide the password for postgres
         env:
+          POSTGRES_USER: postgres     # tambahan dari stackoverflow
           POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: forumapi   # tambahan dari stackoverflow
+        ports:
+          - 5432:5432   # tambahan dari stackoverflow
         # Set health checks to wait until postgres has started
         options: >-
           --health-cmd pg_isready
