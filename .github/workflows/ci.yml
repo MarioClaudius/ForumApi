@@ -8,6 +8,25 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+
+    # Docker Hub image that `container-job` executes in
+    container: node:10.18-jessie
+
+    # Service containers to run with `container-job`
+    services:
+      # Label used to access the service container
+      postgres:
+        # Docker Hub image
+        image: postgres
+        # Provide the password for postgres
+        env:
+          POSTGRES_PASSWORD: postgres
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
  
     strategy:
       matrix:
@@ -20,26 +39,35 @@ jobs:
       uses: actions/setup-node@v2
       with:
         node-version: ${{ matrix.node-version }}
-        heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-        heroku_app_name: "protected-island-39912" #Must be unique in Heroku
-        heroku_email: "mcmario7901@gmail.com"
-        branch: "dev"
+      #   heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+      #   heroku_app_name: "protected-island-39912" #Must be unique in Heroku
+      #   heroku_email: "mcmario7901@gmail.com"
+      #   branch: "dev"
+
+    - name: Connect to PostgreSQL
+        # Runs a script that creates a PostgreSQL table, populates
+        # the table with data, and then retrieves the data.
+      run: node app.js
     - name: npm install migrate and test
       run: |
         npm install
         npm run migrate up
         npm run test
       env:
-        CI: true
-        PGHOST_TEST: ${{ secrets.PGHOST_TEST }}
-        PGUSER_TEST: ${{ secrets.PGUSER_TEST }}
-        PGDATABASE_TEST: ${{ secrets.PGDATABASE_TEST }}
-        PGPASSWORD_TEST: ${{ secrets.PGPASSWORD_TEST }}
-        PGPORT_TEST: ${{ secrets.PGPORT_TEST }}
-        PGHOST: ${{ secrets.PGHOST_TEST }}
-        PGUSER: ${{ secrets.PGUSER_TEST }}
-        PGDATABASE: ${{ secrets.PGDATABASE_TEST }}
-        PGPASSWORD: ${{ secrets.PGPASSWORD_TEST }}
-        PGPORT: ${{ secrets.PGPORT_TEST }}
-        ACCESS_TOKEN_KEY: ${{ secrets.ACCESS_TOKEN_KEY }}
-        REFRESH_TOKEN_KEY: ${{ secrets.REFRESH_TOKEN_KEY }}
+        # The hostname used to communicate with the PostgreSQL service container
+        POSTGRES_HOST: postgres
+        # The default PostgreSQL port
+        POSTGRES_PORT: 5432
+        # CI: true
+        # PGHOST_TEST: ${{ secrets.PGHOST_TEST }}
+        # PGUSER_TEST: ${{ secrets.PGUSER_TEST }}
+        # PGDATABASE_TEST: ${{ secrets.PGDATABASE_TEST }}
+        # PGPASSWORD_TEST: ${{ secrets.PGPASSWORD_TEST }}
+        # PGPORT_TEST: ${{ secrets.PGPORT_TEST }}
+        # PGHOST: ${{ secrets.PGHOST_TEST }}
+        # PGUSER: ${{ secrets.PGUSER_TEST }}
+        # PGDATABASE: ${{ secrets.PGDATABASE_TEST }}
+        # PGPASSWORD: ${{ secrets.PGPASSWORD_TEST }}
+        # PGPORT: ${{ secrets.PGPORT_TEST }}
+        # ACCESS_TOKEN_KEY: ${{ secrets.ACCESS_TOKEN_KEY }}
+        # REFRESH_TOKEN_KEY: ${{ secrets.REFRESH_TOKEN_KEY }}
