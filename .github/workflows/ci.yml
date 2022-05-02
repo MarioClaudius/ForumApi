@@ -70,7 +70,6 @@ jobs:
     - name: npm install migrate and test
       run: |
         npm install
-        node src/app.js
         npm run migrate up
         npm run test
       env:
