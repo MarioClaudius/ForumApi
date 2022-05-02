@@ -47,7 +47,7 @@ jobs:
     - name: Connect to PostgreSQL
         # Runs a script that creates a PostgreSQL table, populates
         # the table with data, and then retrieves the data.
-      run: node app.js
+      run: node src/app.js
     - name: npm install migrate and test
       run: |
         npm install
