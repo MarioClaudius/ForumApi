@@ -51,12 +51,12 @@ jobs:
         touch .env
         echo HOST="localhost" >> .env
         echo PORT="5000" >> .env
-        echo PGHOST="127.0.0.1" >> .env
+        echo PGHOST="localhost" >> .env
         echo PGUSER="developer" >> .env
         echo PGDATABASE="forumapi" >> .env
         echo PGPASSWORD="supersecretpassword" >> .env
         echo PGPORT="5432" >> .env
-        echo PGHOST_TEST="127.0.0.1" >> .env
+        echo PGHOST_TEST="localhost" >> .env
         echo PGUSER_TEST="developer" >> .env
         echo PGDATABASE_TEST="forumapi_test" >> .env
         echo PGPASSWORD_TEST="supersecretpassword" >> .env
@@ -72,7 +72,6 @@ jobs:
     - name: npm install migrate and test
       run: |
         npm install
-        node src/client.js
         npm run migrate up
         npm run test
       env:
