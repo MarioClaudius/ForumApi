@@ -23,9 +23,6 @@ jobs:
           POSTGRES_USER: ${{ secrets.PGUSER_TEST }}
           POSTGRES_PASSWORD: ${{ secrets.PGDATABASE_TEST }}
           POSTGRES_DB: ${{ secrets.PGPASSWORD_TEST }}   # tambahan dari stackoverflow
-          DATABASE_URL:
-        ports:
-          - 5432:5432   # tambahan dari stackoverflow
         # Set health checks to wait until postgres has started
         options: >-
           --health-cmd pg_isready
@@ -54,12 +51,12 @@ jobs:
         touch .env
         echo HOST="localhost" >> .env
         echo PORT="5000" >> .env
-        echo PGHOST="localhost" >> .env
+        echo PGHOST="127.0.0.1" >> .env
         echo PGUSER="developer" >> .env
         echo PGDATABASE="forumapi" >> .env
         echo PGPASSWORD="supersecretpassword" >> .env
         echo PGPORT="5432" >> .env
-        echo PGHOST_TEST="localhost" >> .env
+        echo PGHOST_TEST="127.0.0.1" >> .env
         echo PGUSER_TEST="developer" >> .env
         echo PGDATABASE_TEST="forumapi_test" >> .env
         echo PGPASSWORD_TEST="supersecretpassword" >> .env
