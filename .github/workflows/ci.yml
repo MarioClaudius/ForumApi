@@ -23,8 +23,9 @@ jobs:
           POSTGRES_USER: ${{ secrets.PGUSER_TEST }}
           POSTGRES_PASSWORD: ${{ secrets.PGDATABASE_TEST }}
           POSTGRES_DB: ${{ secrets.PGPASSWORD_TEST }}   # tambahan dari stackoverflow
+          DATABASE_URL:
         ports:
-          - localhost:5432   # tambahan dari stackoverflow
+          - 5432:5432   # tambahan dari stackoverflow
         # Set health checks to wait until postgres has started
         options: >-
           --health-cmd pg_isready
@@ -80,7 +81,7 @@ jobs:
         # The hostname used to communicate with the PostgreSQL service container
         POSTGRES_HOST: postgres
         # The default PostgreSQL port
-        # POSTGRES_PORT: 5432
+        POSTGRES_PORT: 5432
         # CI: true
         # PGHOST_TEST: ${{ secrets.PGHOST_TEST }}
         # PGUSER_TEST: ${{ secrets.PGUSER_TEST }}
