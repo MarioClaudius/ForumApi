@@ -24,7 +24,7 @@ jobs:
           POSTGRES_PASSWORD: ${{ secrets.PGDATABASE_TEST }}
           POSTGRES_DB: ${{ secrets.PGPASSWORD_TEST }}   # tambahan dari stackoverflow
         ports:
-          - 5432:5432   # tambahan dari stackoverflow
+          - localhost:5432   # tambahan dari stackoverflow
         # Set health checks to wait until postgres has started
         options: >-
           --health-cmd pg_isready
