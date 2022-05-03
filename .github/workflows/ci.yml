@@ -24,7 +24,7 @@ jobs:
           POSTGRES_PASSWORD: postgres
           POSTGRES_DB: forumapi   # tambahan dari stackoverflow
         ports:
-          - 5432:5432   # tambahan dari stackoverflow
+          - 5432/tcp   # tambahan dari stackoverflow
         # Set health checks to wait until postgres has started
         options: >-
           --health-cmd pg_isready
@@ -79,8 +79,12 @@ jobs:
       env:
         # The hostname used to communicate with the PostgreSQL service container
         POSTGRES_HOST: postgres
+        PG_USER: postgres
+        PG_DATABASE: postgres
+        PG_PASSWORD: postgres
+        PG_PORT: ${{ job.services.postgres.ports['5432'] }}
         # The default PostgreSQL port
-        POSTGRES_PORT: 5432
+        # POSTGRES_PORT: 5432
         # CI: true
         # PGHOST_TEST: ${{ secrets.PGHOST_TEST }}
         # PGUSER_TEST: ${{ secrets.PGUSER_TEST }}
