@@ -55,7 +55,7 @@ jobs:
         echo HOST="localhost" >> .env
         echo PORT="5000" >> .env
         echo PGHOST="localhost" >> .env
-        echo PGUSER="developer" >> .env
+        echo PGUSER="postgres" >> .env
         echo PGDATABASE="forumapi" >> .env
         echo PGPASSWORD="supersecretpassword" >> .env
         echo PGPORT="5432" >> .env
