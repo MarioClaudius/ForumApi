@@ -56,7 +56,7 @@ jobs:
         echo PORT="5000" >> .env
         echo PGHOST="localhost" >> .env
         echo PGUSER="postgres" >> .env
-        echo PGDATABASE="forumapi12345" >> .env
+        echo PGDATABASE="forumapi" >> .env
         echo PGPASSWORD="supersecretpassword" >> .env
         echo PGPORT="5432" >> .env
         echo PGHOST_TEST="localhost" >> .env
@@ -80,6 +80,7 @@ jobs:
       env:
         # The hostname used to communicate with the PostgreSQL service container
         POSTGRES_HOST: postgres
+        POSTGRES_DATABASE: forumapi
         # POSTGRES_USER: developer
         # POSTGRES_PASSWORD: supersecretpassword
         # The default PostgreSQL port
