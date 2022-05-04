@@ -60,7 +60,7 @@ jobs:
         echo PGPASSWORD="supersecretpassword" >> .env
         echo PGPORT="5432" >> .env
         echo PGHOST_TEST="localhost" >> .env
-        echo PGUSER_TEST="developer" >> .env
+        echo PGUSER_TEST="postgres" >> .env
         echo PGDATABASE_TEST="forumapi_test" >> .env
         echo PGPASSWORD_TEST="supersecretpassword" >> .env
         echo PGPORT_TEST="5432" >> .env
