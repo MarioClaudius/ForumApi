@@ -22,7 +22,7 @@ jobs:
         env:
           POSTGRES_USER: ${{ secrets.PGUSER_TEST }}
           POSTGRES_PASSWORD: ${{ secrets.PGPASSWORD_TEST }}
-          # POSTGRES_DB: ${{ secrets.PGPASSWORD_TEST }}   # tambahan dari stackoverflow
+          POSTGRES_DB: ${{ secrets.DATABASE_TEST }}   # tambahan dari stackoverflow
         # Set health checks to wait until postgres has started
         options: >-
           --health-cmd pg_isready
@@ -56,16 +56,16 @@ jobs:
         echo PORT="5000" >> .env
         echo PGHOST="localhost" >> .env
         echo PGUSER=${{ secrets.PGUSER_TEST }} >> .env
-        echo PGDATABASE="postgres" >> .env
+        echo PGDATABASE=${{ secrets.DATABASE_TEST }} >> .env
         echo PGPASSWORD=${{ secrets.PGPASSWORD_TEST }} >> .env
-        echo PGPORT="5432" >> .env
+        echo PGPORT=${{ secrets.PGHOST_TEST }} >> .env
         echo PGHOST_TEST="localhost" >> .env
         echo PGUSER_TEST=${{ secrets.PGUSER_TEST }} >> .env
-        echo PGDATABASE_TEST="postgres" >> .env
+        echo PGDATABASE_TEST=${{ secrets.DATABASE_TEST }} >> .env
         echo PGPASSWORD_TEST=${{ secrets.PGPASSWORD_TEST }} >> .env
-        echo PGPORT_TEST="5432" >> .env
-        echo ACCESS_TOKEN_KEY="8b7b4ef375716ab08b2a3951b29d52fc00b1c855f9d1a847229b8c5935bef56d9d271e76a9cf08e614300395c3b90ebe559cf968a0741b18c9505549394b2c70" >> .env
-        echo REFRESH_TOKEN_KEY="5078605e074a462b1460608fcbe0d0963c644402e04ad334455ff5a856cb43fd99825861dde02957d5e3184c90c532ca7d0249df20fe93d535632f3d11be7bad" >> .env
+        echo PGPORT_TEST=${{ secrets.PGHOST_TEST }} >> .env
+        echo ACCESS_TOKEN_KEY=${{ secrets.ACCESS_TOKEN_KEY }} >> .env
+        echo REFRESH_TOKEN_KEY=${{ secrets.REFRESH_TOKEN_KEY }} >> .env
         echo ACCESS_TOKEN_AGE="3000" >> .env
         cat .env
     # - name: Connect to PostgreSQL
