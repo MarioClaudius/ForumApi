@@ -8,6 +8,30 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+
+    # Docker Hub image that `container-job` executes in
+    # container: node:10.18-jessie
+
+    # Service containers to run with `container-job`
+    services:
+      # Label used to access the service container
+      postgres:
+        # Docker Hub image
+        image: postgres
+        # Provide the password, user & database for postgres
+        env:
+          POSTGRES_USER: ${{ secrets.PGUSER_TEST }}
+          POSTGRES_PASSWORD: ${{ secrets.PGPASSWORD_TEST }}
+          POSTGRES_DB: ${{ secrets.DATABASE_TEST }}
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          # Maps tcp port 5432 on service container to the host
+          - 5432:5432
  
     strategy:
       matrix:
@@ -20,22 +44,26 @@ jobs:
       uses: actions/setup-node@v2
       with:
         node-version: ${{ matrix.node-version }}
+
+    - name: create .env file
+      run: |
+        touch .env
+        echo PGHOST=${{ secrets.PGHOST_TEST }} >> .env
+        echo PGUSER=${{ secrets.PGUSER_TEST }} >> .env
+        echo PGDATABASE=${{ secrets.DATABASE_TEST }} >> .env
+        echo PGPASSWORD=${{ secrets.PGPASSWORD_TEST }} >> .env
+        echo PGPORT="5432" >> .env
+        echo PGHOST_TEST=${{ secrets.PGHOST_TEST }} >> .env
+        echo PGUSER_TEST=${{ secrets.PGUSER_TEST }} >> .env
+        echo PGDATABASE_TEST=${{ secrets.DATABASE_TEST }} >> .env
+        echo PGPASSWORD_TEST=${{ secrets.PGPASSWORD_TEST }} >> .env
+        echo PGPORT_TEST="5432" >> .env
+        echo ACCESS_TOKEN_KEY=${{ secrets.ACCESS_TOKEN_KEY }} >> .env
+        echo REFRESH_TOKEN_KEY=${{ secrets.REFRESH_TOKEN_KEY }} >> .env
+        echo ACCESS_TOKEN_AGE="3000" >> .env
+        cat .env
     - name: npm install migrate and test
       run: |
         npm install
         npm run migrate up
         npm run test
-      env:
-        CI: true
-        PGHOST_TEST: ${{ secrets.PGHOST_TEST }}
-        PGUSER_TEST: ${{ secrets.PGUSER_TEST }}
-        PGDATABASE_TEST: ${{ secrets.PGDATABASE_TEST }}
-        PGPASSWORD_TEST: ${{ secrets.PGPASSWORD_TEST }}
-        PGPORT_TEST: ${{ secrets.PGPORT_TEST }}
-        PGHOST: ${{ secrets.PGHOST_TEST }}
-        PGUSER: ${{ secrets.PGUSER_TEST }}
-        PGDATABASE: ${{ secrets.PGDATABASE_TEST }}
-        PGPASSWORD: ${{ secrets.PGPASSWORD_TEST }}
-        PGPORT: ${{ secrets.PGPORT_TEST }}
-        ACCESS_TOKEN_KEY: ${{ secrets.ACCESS_TOKEN_KEY }}
-        REFRESH_TOKEN_KEY: ${{ secrets.REFRESH_TOKEN_KEY }}
