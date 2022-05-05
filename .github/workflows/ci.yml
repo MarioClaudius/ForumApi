@@ -20,7 +20,7 @@ jobs:
         image: postgres
         # Provide the password for postgres
         env:
-          # POSTGRES_USER: ${{ secrets.PGUSER_TEST }}
+          POSTGRES_USER: developer #${{ secrets.PGUSER_TEST }}
           POSTGRES_PASSWORD: ${{ secrets.PGPASSWORD_TEST }}
           # POSTGRES_DB: ${{ secrets.PGPASSWORD_TEST }}   # tambahan dari stackoverflow
         # Set health checks to wait until postgres has started
