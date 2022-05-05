@@ -77,14 +77,14 @@ jobs:
         npm install
         npm run migrate up
         npm run test
-      env:
+      # env:
         # The hostname used to communicate with the PostgreSQL service container
-        POSTGRES_HOST: postgres
-        POSTGRES_DATABASE: forumapi
+        # POSTGRES_HOST: postgres
+        # POSTGRES_DATABASE: forumapi
         # POSTGRES_USER: developer
         # POSTGRES_PASSWORD: supersecretpassword
         # The default PostgreSQL port
-        POSTGRES_PORT: 5432
+        # POSTGRES_PORT: 5432
         # CI: true
         # PGHOST_TEST: ${{ secrets.PGHOST_TEST }}
         # PGUSER_TEST: ${{ secrets.PGUSER_TEST }}
