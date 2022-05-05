@@ -20,7 +20,7 @@ jobs:
         image: postgres
         # Provide the password for postgres
         env:
-          POSTGRES_USER: developer #${{ secrets.PGUSER_TEST }}
+          POSTGRES_USER: ${{ secrets.PGUSER_TEST }}
           POSTGRES_PASSWORD: ${{ secrets.PGPASSWORD_TEST }}
           # POSTGRES_DB: ${{ secrets.PGPASSWORD_TEST }}   # tambahan dari stackoverflow
         # Set health checks to wait until postgres has started
@@ -55,12 +55,12 @@ jobs:
         echo HOST="localhost" >> .env
         echo PORT="5000" >> .env
         echo PGHOST="localhost" >> .env
-        echo PGUSER="postgres" >> .env
+        echo PGUSER=${{ secrets.PGUSER_TEST }} >> .env
         echo PGDATABASE="postgres" >> .env
         echo PGPASSWORD=${{ secrets.PGPASSWORD_TEST }} >> .env
         echo PGPORT="5432" >> .env
         echo PGHOST_TEST="localhost" >> .env
-        echo PGUSER_TEST="postgres" >> .env
+        echo PGUSER_TEST=${{ secrets.PGUSER_TEST }} >> .env
         echo PGDATABASE_TEST="postgres" >> .env
         echo PGPASSWORD_TEST=${{ secrets.PGPASSWORD_TEST }} >> .env
         echo PGPORT_TEST="5432" >> .env
