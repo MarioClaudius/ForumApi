@@ -58,12 +58,12 @@ jobs:
         echo PGUSER=${{ secrets.PGUSER_TEST }} >> .env
         echo PGDATABASE=${{ secrets.DATABASE_TEST }} >> .env
         echo PGPASSWORD=${{ secrets.PGPASSWORD_TEST }} >> .env
-        echo PGPORT=${{ secrets.PGHOST_TEST }} >> .env
+        echo PGPORT="5432" >> .env
         echo PGHOST_TEST="localhost" >> .env
         echo PGUSER_TEST=${{ secrets.PGUSER_TEST }} >> .env
         echo PGDATABASE_TEST=${{ secrets.DATABASE_TEST }} >> .env
         echo PGPASSWORD_TEST=${{ secrets.PGPASSWORD_TEST }} >> .env
-        echo PGPORT_TEST=${{ secrets.PGHOST_TEST }} >> .env
+        echo PGPORT_TEST="5432" >> .env
         echo ACCESS_TOKEN_KEY=${{ secrets.ACCESS_TOKEN_KEY }} >> .env
         echo REFRESH_TOKEN_KEY=${{ secrets.REFRESH_TOKEN_KEY }} >> .env
         echo ACCESS_TOKEN_AGE="3000" >> .env
