@@ -45,7 +45,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
 
-    - name: create .env file
+    - name: create .env file 
       run: |
         touch .env
         echo PGHOST=${{ secrets.PGHOST_TEST }} >> .env
