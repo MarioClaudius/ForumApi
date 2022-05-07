@@ -21,6 +21,10 @@ const createServer = async (container) => {
     },
     {
       plugin: HapiRateLimit,
+      options: {
+        enabled: false,
+        authLimit: false,
+      },
     },
   ]);
 
