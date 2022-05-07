@@ -1,5 +1,6 @@
 const Hapi = require('@hapi/hapi');
 const Jwt = require('@hapi/jwt');
+const HapiRateLimit = require('hapi-rate-limit');
 const ClientError = require('../../Commons/exceptions/ClientError');
 const DomainErrorTranslator = require('../../Commons/exceptions/DomainErrorTranslator');
 const users = require('../../Interfaces/http/api/users');
@@ -15,7 +16,12 @@ const createServer = async (container) => {
 
   // registrasi plugin eksternal
   await server.register([
-    { plugin: Jwt },
+    {
+      plugin: Jwt,
+    },
+    {
+      plugin: HapiRateLimit,
+    },
   ]);
 
   // mendefinisikan strategy autentikasi jwt
