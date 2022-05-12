@@ -17,7 +17,7 @@ describe('/threads endpoint', () => {
     await CommentsTableTestHelper.cleanTable();
   });
 
-  describe('when POST /threads', () => {
+  describe('when POST /threadstest', () => {
     it('should response 201 and added thread', async () => {
       // Arrange
       const requestPayload = {
@@ -30,7 +30,7 @@ describe('/threads endpoint', () => {
       // Action
       const response = await server.inject({
         method: 'POST',
-        url: '/threads',
+        url: '/threadstest',
         payload: requestPayload,
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -39,6 +39,9 @@ describe('/threads endpoint', () => {
 
       // Assert
       const responseJson = JSON.parse(response.payload);
+      // console.log('responseJson', responseJson);
+      console.log('response', response);
+      console.log('response_headers', response.headers);
       expect(response.statusCode).toEqual(201);
       expect(responseJson.status).toEqual('success');
       expect(responseJson.data.addedThread).toBeDefined();
@@ -55,7 +58,7 @@ describe('/threads endpoint', () => {
       // Action
       const response = await server.inject({
         method: 'POST',
-        url: '/threads',
+        url: '/threadstest',
         payload: requestPayload,
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -80,7 +83,7 @@ describe('/threads endpoint', () => {
       // Action
       const response = await server.inject({
         method: 'POST',
-        url: '/threads',
+        url: '/threadstest',
         payload: requestPayload,
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -113,11 +116,13 @@ describe('/threads endpoint', () => {
       // Action
       const response = await server.inject({
         method: 'GET',
-        url: `/threads/${threadId}`,
+        url: `/threadstest/${threadId}`,
       });
 
       // Assert
       const responseJson = JSON.parse(response.payload);
+      // console.log(response);
+      // console.log(responseJson);
       expect(response.statusCode).toEqual(200);
       expect(responseJson.status).toEqual('success');
       expect(responseJson.data.thread).toBeDefined();
@@ -142,7 +147,7 @@ describe('/threads endpoint', () => {
       // Action
       const response = await server.inject({
         method: 'GET',
-        url: `/threads/${threadId}`,
+        url: `/threadstest/${threadId}`,
       });
 
       // Assert
@@ -170,7 +175,7 @@ describe('/threads endpoint', () => {
       // Action
       const response = await server.inject({
         method: 'GET',
-        url: '/threads/fakeThreadId',
+        url: '/threadstest/fakeThreadId',
       });
 
       // Assert
